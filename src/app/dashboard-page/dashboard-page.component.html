@@ -1,0 +1,41 @@
+<!--<app-loading-spinner></app-loading-spinner>-->
+<div *ngIf="orders.length; else loading">
+  <div class="form-control">
+    <!--    <input type="text" placeholder="Search post by title..." [(ngModel)]="searchStr">-->
+  </div>
+  <table>
+    <thead>
+    <tr>
+      <th style="width: 30px">№</th>
+      <th>Name</th>
+      <th>Service</th>
+      <th>Price</th>
+      <th class="small">Edit</th>
+      <th class="small">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--    <tr *ngFor="let post of posts | searchPosts:searchStr; let i = index">-->
+    <tr *ngFor="let order of orders ; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ order.name }}</td>
+      <td>{{ order.serviceType }}</td>
+      <td>${{ order.price }}</td>
+      <!--      <td>{{ post.date | date: 'full':null: 'vi' }}</td>-->
+      <td>
+        <button
+          class="btn btn-link open"
+          [routerLink]="['/edit', order.id]"
+        >Edit order
+        </button>
+      </td>
+      <td>
+        <a (click)="removePost(order.id)">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<ng-template #loading>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

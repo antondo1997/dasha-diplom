@@ -1,0 +1,92 @@
+<div *ngIf="form; else loading">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Корректировать заказ</h1>
+
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('name').touched && form.get('name').invalid}"
+    >
+      <label for="name">ФИО:</label>
+      <input type="text" id="name" formControlName="name">
+      <div
+        *ngIf="form.get('name').touched && form.get('name').invalid"
+        class="validation"
+      >
+        <small *ngIf="form.get('name').errors.required">Введите ФИО</small>
+        <!--      <small *ngIf="form.get('title').errors.email">Enter email correctly</small>-->
+      </div>
+    </div>
+
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('serviceType').touched && form.get('serviceType').invalid}"
+    >
+      <label for="serviceType">Тип услуги:</label>
+      <!--    <input type="text" id="serviceType" formControlName="serviceType">-->
+      <select id="serviceType" formControlName="serviceType">
+        <option value="" disabled>Выбрать услугу</option>
+        <option *ngFor="let type of serviceTypes" [ngValue]="type.en">{{type.ru}}</option>
+      </select>
+    </div>
+
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('seo').touched && form.get('seo').invalid}"
+    >
+      <label for="seo">Стоимость оплаты сеошника:</label>
+      <input type="number" id="seo" formControlName="seo" min="0">
+    </div>
+
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('layoutDesigner').touched && form.get('layoutDesigner').invalid}"
+    >
+      <label for="layoutDesigner">Стоимость оплаты вертальщика:</label>
+      <input type="number" id="layoutDesigner" formControlName="layoutDesigner" min="0">
+    </div>
+
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('programmer').touched && form.get('programmer').invalid}"
+    >
+      <label for="programmer">Стоимость оплаты программиста:</label>
+      <input type="number" id="programmer" formControlName="programmer" min="0">
+    </div>
+
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('time').touched && form.get('time').invalid}"
+    >
+      <label for="time">Времея оказания услуги (количество дней):</label>
+      <input type="number" id="time" formControlName="time" min="0">
+    </div>
+
+    <button type="button" class="btn btn-block" style="margin: 0 auto; width: 50%"
+            [disabled]="form.get('serviceType').value === '' ||form.get('seo').invalid || form.get('layoutDesigner').invalid || form.get('programmer').invalid || form.get('time').invalid"
+            (click)="calculate()"
+    >
+      Посчитать цену
+    </button>
+
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('price').touched && form.get('price').invalid}"
+    >
+      <label for="price">Цена услуги:</label>
+      <input type="number" id="price" formControlName="price" disabled>
+    </div>
+
+
+    <button
+      type="submit"
+      class="btn btn-block btn-dark"
+      [disabled]="form.invalid || submitted"
+    >Обновить заказ
+    </button>
+
+  </form>
+</div>
+
+<ng-template #loading>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>
