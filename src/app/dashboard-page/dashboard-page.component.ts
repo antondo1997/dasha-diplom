@@ -26,14 +26,14 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     this.postsSub = this.ordersService.getAll().subscribe((orders) => {
       // console.log(posts);
       this.orders = orders;
-      // console.log('Posts:', this.posts);
+      console.log('Orders:', this.orders);
     });
   }
 
-  removePost(id: string) {
+  removeOrder(id: string) {
     this.removeSub = this.ordersService.remove(id).subscribe(() => {
       this.orders = this.orders.filter(order => order.id !== id);
-      this.alert.warning('Post has been deleted!');
+      this.alert.warning('Order has been deleted!');
     });
   }
 

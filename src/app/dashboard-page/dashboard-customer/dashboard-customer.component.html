@@ -1,4 +1,7 @@
 <!--<app-loading-spinner></app-loading-spinner>-->
+<div *ngIf="customer">
+  <h1>Заказчик - {{customer.company}}</h1>
+</div>
 <div *ngIf="orders.length; else loading">
   <div class="form-control">
     <!--    <input type="text" placeholder="Search post by title..." [(ngModel)]="searchStr">-->
@@ -7,7 +10,6 @@
     <thead>
     <tr>
       <th style="width: 30px">№</th>
-      <th>Заказчик</th>
       <th>Тип услуги</th>
       <th class="small">Редактировать</th>
       <th class="small">Удалить</th>
@@ -17,7 +19,6 @@
     <!--    <tr *ngFor="let post of posts | searchPosts:searchStr; let i = index">-->
     <tr *ngFor="let order of orders ; let i = index">
       <td>{{ i + 1 }}</td>
-      <td><a [routerLink]="['/dashboard', order.idCustomer]">{{ order.company }}</a></td>
       <td>{{ order.serviceType }}</td>
       <!--      <td>{{ post.date | date: 'full':null: 'vi' }}</td>-->
       <td class="text-center">
@@ -33,6 +34,14 @@
     </tr>
     </tbody>
   </table>
+</div>
+<div style="width: 600px; margin: 10px auto;" *ngIf="customer">
+  <button
+    type="submit"
+    class="btn btn-dark"
+    [routerLink]="['/create','order', customer.id]"
+  >Добавить заказ
+  </button>
 </div>
 <ng-template #loading>
   <app-loading-spinner></app-loading-spinner>

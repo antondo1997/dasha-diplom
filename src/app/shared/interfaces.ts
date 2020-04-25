@@ -10,7 +10,7 @@ export interface FbAuthResponse {
 }
 
 export interface Order {
-  name: string;
+  company: string;
   serviceType: string;
   salary: {
     seo: number;
@@ -20,15 +20,31 @@ export interface Order {
   time: number;
   price: number;
   id?: string;
+  idCustomer?: string;
 }
 
-export interface Post {
+export interface Customer {
+  company: string;
+  contactPerson: string;
+  telephone: string;
+  email: string;
+  checkingAccount: string;
   id?: string;
-  title: string;
-  content: string;
-  author: string;
-  date: Date;
 }
+
+export type serviceTypes = [
+  {ru: 'SEO', en: 'SEO'},
+  {ru: 'SMM', en: 'SMM'},
+  {ru: 'Контекстная реклама', en: 'contextual'}
+];
+
+// export interface Post {
+//   id?: string;
+//   title: string;
+//   content: string;
+//   author: string;
+//   date: Date;
+// }
 
 export class FbCreateResponse {
   name: string;

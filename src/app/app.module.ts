@@ -14,6 +14,8 @@ import { AlertComponent } from './shared/alert/alert.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import {CommonModule} from '@angular/common';
 import {AlertService} from './shared/alert.service';
+import { CreateCustomerComponent } from './create-customer/create-customer.component';
+import { DashboardCustomerComponent } from './dashboard-page/dashboard-customer/dashboard-customer.component';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -29,7 +31,9 @@ const INTERCEPTOR_PROVIDER: Provider = {
     CreateOrderComponent,
     EditOrderComponent,
     AlertComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    CreateCustomerComponent,
+    DashboardCustomerComponent
   ],
   imports: [
     BrowserModule,

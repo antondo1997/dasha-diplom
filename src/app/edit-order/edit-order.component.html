@@ -4,15 +4,15 @@
 
     <div
       class="form-control"
-      [ngClass]="{invalid: form.get('name').touched && form.get('name').invalid}"
+      [ngClass]="{invalid: form.get('company').touched && form.get('company').invalid}"
     >
-      <label for="name">ФИО:</label>
-      <input type="text" id="name" formControlName="name">
+      <label for="company">Компания:</label>
+      <input type="text" id="company" formControlName="company" readonly>
       <div
-        *ngIf="form.get('name').touched && form.get('name').invalid"
+        *ngIf="form.get('company').touched && form.get('company').invalid"
         class="validation"
       >
-        <small *ngIf="form.get('name').errors.required">Введите ФИО</small>
+        <small *ngIf="form.get('company').errors.required">Введите ФИО</small>
         <!--      <small *ngIf="form.get('title').errors.email">Enter email correctly</small>-->
       </div>
     </div>
@@ -73,7 +73,7 @@
       [ngClass]="{invalid: form.get('price').touched && form.get('price').invalid}"
     >
       <label for="price">Цена услуги:</label>
-      <input type="number" id="price" formControlName="price" disabled>
+      <input type="number" id="price" formControlName="price" readonly>
     </div>
 
 

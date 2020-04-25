@@ -3,7 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {Order} from './interfaces';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {map} from 'rxjs/operators';
+import {filter, map, tap} from 'rxjs/operators';
+import {log} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,22 @@ export class OrdersService {
         })
       );
   }
+
+  getOrdersByIdCustomer(id: string) {
+    // return this.getAll()
+    //   .pipe(
+    //     filter((orders) => orders.)
+    //   );
+
+    // this.http.get<Order[]>(`${environment.databaseURL}/orders.json`)
+    //   .pipe(
+    //     tap((data) => {
+    //       console.log(data);
+    //     }),
+    //     map((orders) => orders.filter((order) => order.idCustomer === id))
+    //   );
+  }
+
 
   remove(id: string) {
     return this.http.delete(`${environment.databaseURL}/orders/${id}.json`);

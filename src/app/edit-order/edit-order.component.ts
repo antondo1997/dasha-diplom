@@ -15,14 +15,13 @@ import {switchMap} from 'rxjs/operators';
 export class EditOrderComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
-  orderId: string;
+  order: Order;
   submitted = false;
   updateSub: Subscription;
   serviceTypes = [
     {ru: 'SEO', en: 'SEO'},
     {ru: 'SMM', en: 'SMM'},
-    {ru: 'Контекстная реклама', en: 'contextual'},
-    {ru: 'Аудит сайта', en: 'audit'},
+    {ru: 'Контекстная реклама', en: 'contextual'}
   ];
 
   constructor(
@@ -41,9 +40,9 @@ export class EditOrderComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((order) => {
-        this.orderId = order.id;
+        this.order = order;
         this.form = new FormGroup({
-          name: new FormControl(order.name, [
+          company: new FormControl(order.company, [
             Validators.required,
           ]),
           serviceType: new FormControl(order.serviceType, [
@@ -74,8 +73,8 @@ export class EditOrderComponent implements OnInit, OnDestroy {
     }
     this.submitted = true;
     const newOrder: Order = {
-      id: this.orderId,
-      name: this.form.value.name,
+      id: this.order.id,
+      company: this.form.value.name,
       serviceType: this.form.value.serviceType,
       salary: {
         seo: this.form.value.seo,
@@ -83,7 +82,8 @@ export class EditOrderComponent implements OnInit, OnDestroy {
         programmer: this.form.value.programmer
       },
       time: this.form.value.time,
-      price: this.form.value.price
+      price: this.form.value.price,
+      idCustomer: this.order.idCustomer
     };
 
     this.updateSub = this.ordersService.update(newOrder).subscribe(() => {
