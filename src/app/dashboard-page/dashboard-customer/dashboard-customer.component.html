@@ -11,6 +11,7 @@
     <tr>
       <th style="width: 30px">№</th>
       <th>Тип услуги</th>
+      <th>Срок оказания услгуи</th>
       <th class="small">Редактировать</th>
       <th class="small">Удалить</th>
     </tr>
@@ -20,7 +21,11 @@
     <tr *ngFor="let order of orders ; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ order.serviceType }}</td>
-      <!--      <td>{{ post.date | date: 'full':null: 'vi' }}</td>-->
+      <td class="text-center">
+        <div *ngIf="order.date">{{ order.date}}</div>
+        <div *ngIf="!order.date">Нет даты</div>
+      </td>
+      <!--            <td>{{ post.date | date: 'full':null: 'vi' }}</td>-->
       <td class="text-center">
         <button
           class="btn btn-link open"
@@ -35,10 +40,10 @@
     </tbody>
   </table>
 </div>
-<div style="width: 600px; margin: 10px auto;" *ngIf="customer">
+<div style="width: 100%; padding: 10px;" *ngIf="customer">
   <button
     type="submit"
-    class="btn btn-dark"
+    class="btn btn-dark btn-block" style="margin: 0 auto; width: 25%"
     [routerLink]="['/create','order', customer.id]"
   >Добавить заказ
   </button>

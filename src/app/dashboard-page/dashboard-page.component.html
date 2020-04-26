@@ -1,5 +1,8 @@
 <!--<app-loading-spinner></app-loading-spinner>-->
-<div *ngIf="orders.length; else loading">
+<div *ngIf="!orders.length">
+  <h1>Нет заказов</h1>
+</div>
+<div *ngIf="orders.length">
   <div class="form-control">
     <!--    <input type="text" placeholder="Search post by title..." [(ngModel)]="searchStr">-->
   </div>
@@ -9,6 +12,7 @@
       <th style="width: 30px">№</th>
       <th>Заказчик</th>
       <th>Тип услуги</th>
+      <th>Срок оказания услгуи</th>
       <th class="small">Редактировать</th>
       <th class="small">Удалить</th>
     </tr>
@@ -19,6 +23,10 @@
       <td>{{ i + 1 }}</td>
       <td><a [routerLink]="['/dashboard', order.idCustomer]">{{ order.company }}</a></td>
       <td>{{ order.serviceType }}</td>
+      <td class="text-center">
+        <div *ngIf="order.date">{{ order.date}}</div>
+        <div *ngIf="!order.date">Нет даты</div>
+      </td>
       <!--      <td>{{ post.date | date: 'full':null: 'vi' }}</td>-->
       <td class="text-center">
         <button
@@ -34,6 +42,6 @@
     </tbody>
   </table>
 </div>
-<ng-template #loading>
-  <app-loading-spinner></app-loading-spinner>
-</ng-template>
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+

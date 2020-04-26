@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Order} from '../shared/interfaces';
+import {LIST_SERVICE_TYPE, Order} from '../shared/interfaces';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {OrdersService} from '../shared/orders.service';
 import {AlertService} from '../shared/alert.service';
 import {switchMap} from 'rxjs/operators';
+import {BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-edit-order',
@@ -21,8 +22,11 @@ export class EditOrderComponent implements OnInit, OnDestroy {
   serviceTypes = [
     {ru: 'SEO', en: 'SEO'},
     {ru: 'SMM', en: 'SMM'},
-    {ru: 'Контекстная реклама', en: 'contextual'}
+    {ru: 'Контекстная реклама', en: 'Контекстуальный'}
   ];
+  list;
+  sumHours = 0;
+  bsConfig: Partial<BsDatepickerConfig>;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +37,7 @@ export class EditOrderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.bsConfig = Object.assign({}, {containerClass: 'theme-red'});
     this.route.params
       .pipe(
         switchMap((params) => {
@@ -41,29 +46,23 @@ export class EditOrderComponent implements OnInit, OnDestroy {
       )
       .subscribe((order) => {
         this.order = order;
+        this.list = LIST_SERVICE_TYPE[order.serviceType];
         this.form = new FormGroup({
           company: new FormControl(order.company, [
+            Validators.required,
+          ]),
+          date: new FormControl(order.date, [
             Validators.required,
           ]),
           serviceType: new FormControl(order.serviceType, [
             Validators.required
           ]),
-          seo: new FormControl(order.salary.seo, [
-            Validators.required
-          ]),
-          layoutDesigner: new FormControl(order.salary.layoutDesigner, [
-            Validators.required
-          ]),
-          programmer: new FormControl(order.salary.programmer, [
-            Validators.required
-          ]),
-          time: new FormControl(order.time, [
-            Validators.required
-          ]),
-          price: new FormControl(order.price, [
-            Validators.required
-          ])
         });
+        // console.log('Order:', order.date);
+        for (const item of this.list) {
+          this.form.addControl(item.en, new FormControl(order.hours_rate[item.en], [Validators.required]));
+          this.sumHours += this.form.get(item.en).value;
+        }
       });
   }
 
@@ -72,19 +71,19 @@ export class EditOrderComponent implements OnInit, OnDestroy {
       return;
     }
     this.submitted = true;
+    const dates: Date[] = this.form.value.date;
     const newOrder: Order = {
       id: this.order.id,
       company: this.form.value.name,
       serviceType: this.form.value.serviceType,
-      salary: {
-        seo: this.form.value.seo,
-        layoutDesigner: this.form.value.layoutDesigner,
-        programmer: this.form.value.programmer
-      },
-      time: this.form.value.time,
-      price: this.form.value.price,
+      hours_rate: {},
+      date: `${dates[0].getDate()}.${dates[0].getMonth() + 1}.${dates[0].getFullYear()} - ${dates[1].getDate()}.${dates[1].getMonth() + 1}.${dates[1].getFullYear()}`,
+      price: +(Math.round(Number((this.sumHours * 36.95) + 'e+2')) + 'e-2'),
       idCustomer: this.order.idCustomer
     };
+    this.list.forEach((item) => {
+      newOrder.hours_rate[item.en] = this.form.value[item.en];
+    });
 
     this.updateSub = this.ordersService.update(newOrder).subscribe(() => {
       this.submitted = false;
@@ -94,11 +93,37 @@ export class EditOrderComponent implements OnInit, OnDestroy {
     });
   }
 
-  calculate() {
-    const sum = (this.form.get('seo').value + this.form.get('layoutDesigner').value + this.form.get('programmer').value) * this.form.get('time').value / 30;
-    this.form.patchValue({
-      price: +(Math.round(Number(sum + 'e+2')) + 'e-2')
+  onChangeType() {
+    // console.log('Customer Data:', this.customer);
+    // console.log('List:', LIST_SERVICE_TYPE[this.form.value.serviceType]);
+    this.list = LIST_SERVICE_TYPE[this.form.value.serviceType];
+    this.sumHours = 0;
+    this.form = new FormGroup({
+      company: new FormControl(this.order.company, [
+        Validators.required,
+      ]),
+      date: new FormControl(this.form.value.date, [
+        Validators.required,
+      ]),
+      serviceType: new FormControl(this.form.value.serviceType, [
+        Validators.required
+      ]),
     });
+    for (const item of this.list) {
+      this.form.addControl(item.en, new FormControl(null, [Validators.required]));
+    }
+  }
+
+  calculate_sum_hours() {
+    this.sumHours = 0;
+    for (const item of this.list) {
+      this.sumHours += this.form.get(item.en).value * item.rate;
+    }
+    this.sumHours = +(Math.round(Number(this.sumHours + 'e+2')) + 'e-2');
+
+    // this.form.patchValue({
+    //   price: +(Math.round(Number((this.sumHours * 36.95) + 'e+2')) + 'e-2')
+    // });
   }
 
   ngOnDestroy(): void {

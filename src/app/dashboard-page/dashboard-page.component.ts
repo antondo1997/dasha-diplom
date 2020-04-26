@@ -15,6 +15,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   postsSub: Subscription;
   removeSub: Subscription;
   searchStr = '';
+  isLoading: boolean;
 
   constructor(
     private ordersService: OrdersService,
@@ -23,10 +24,12 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this.postsSub = this.ordersService.getAll().subscribe((orders) => {
       // console.log(posts);
       this.orders = orders;
       console.log('Orders:', this.orders);
+      this.isLoading = false;
     });
   }
 

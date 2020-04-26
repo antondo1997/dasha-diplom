@@ -16,12 +16,17 @@ import {CommonModule} from '@angular/common';
 import {AlertService} from './shared/alert.service';
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
 import { DashboardCustomerComponent } from './dashboard-page/dashboard-customer/dashboard-customer.component';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {defineLocale, ruLocale} from 'ngx-bootstrap/chronos';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
   multi: true,
   useClass: AuthInterceptor
 };
+
+defineLocale('ru', ruLocale);
 
 @NgModule({
   declarations: [
@@ -40,7 +45,9 @@ const INTERCEPTOR_PROVIDER: Provider = {
     AppRoutingModule,
     CommonModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [INTERCEPTOR_PROVIDER, AlertService],
   bootstrap: [AppComponent]

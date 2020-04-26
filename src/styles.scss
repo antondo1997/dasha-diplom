@@ -209,9 +209,26 @@ img {
 }
 
 .form-control {
-  display: block;
+   display: block;
+   color: #888;
+   margin-bottom: .8rem;
+
+   &.invalid {
+     color: var(--primary-color);
+     input, textarea, select {
+       border-color: var(--primary-color);
+     }
+   }
+
+   .validation {
+     color: var(--primary-color);
+   }
+ }
+
+.form-control-tb {
+  //display: block;
   color: #888;
-  margin-bottom: .8rem;
+  //margin-bottom: .8rem;
 
   &.invalid {
     color: var(--primary-color);
