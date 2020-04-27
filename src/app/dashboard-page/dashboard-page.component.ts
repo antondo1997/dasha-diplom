@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Order} from '../shared/interfaces';
-import {Subscription} from 'rxjs';
+import {Customer, Order} from '../shared/interfaces';
+import {Subject, Subscription} from 'rxjs';
 import {AlertService} from '../shared/alert.service';
 import {OrdersService} from '../shared/orders.service';
+import {CustomerService} from '../shared/customer.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -11,41 +12,51 @@ import {OrdersService} from '../shared/orders.service';
 })
 export class DashboardPageComponent implements OnInit, OnDestroy {
 
-  orders: Order[] = [];
-  postsSub: Subscription;
-  removeSub: Subscription;
-  searchStr = '';
-  isLoading: boolean;
+  customers: Customer[] = [];
+  removeCustomerSub: Subscription;
+  customersSub: Subscription;
+  customerNumCountSub: Subscription;
+  isLoading = true;
 
   constructor(
-    private ordersService: OrdersService,
-    private alert: AlertService
+    private alert: AlertService,
+    private customerService: CustomerService
   ) {
   }
 
   ngOnInit() {
     this.isLoading = true;
-    this.postsSub = this.ordersService.getAll().subscribe((orders) => {
-      // console.log(posts);
-      this.orders = orders;
-      console.log('Orders:', this.orders);
-      this.isLoading = false;
-    });
+    this.customersSub = this.customerService.getAll()
+      .subscribe((customers) => {
+        this.customers = customers;
+        this.isLoading = false;
+      });
+
+    this.customerNumCountSub = this.customerService.numCount$
+      .subscribe((data) => {
+        const index = this.customers.indexOf(this.customers.filter(customer => customer.id === data.id)[0]);
+        // console.log(this.customers.filter(customer => customer.id === data.id)[0]);
+        // console.log(index);
+        this.customers[index].count = data.count;
+      });
   }
 
-  removeOrder(id: string) {
-    this.removeSub = this.ordersService.remove(id).subscribe(() => {
-      this.orders = this.orders.filter(order => order.id !== id);
-      this.alert.warning('Order has been deleted!');
+  removeCustomer(id: string) {
+    this.removeCustomerSub = this.customerService.remove(id).subscribe(() => {
+      this.customers = this.customers.filter(customer => customer.id !== id);
+      this.alert.warning('Customer has been deleted!');
     });
   }
 
   ngOnDestroy(): void {
-    if (this.postsSub) {
-      this.postsSub.unsubscribe();
+    if (this.customersSub) {
+      this.customersSub.unsubscribe();
     }
-    if (this.removeSub) {
-      this.removeSub.unsubscribe();
+    if (this.removeCustomerSub) {
+      this.removeCustomerSub.unsubscribe();
+    }
+    if (this.customerNumCountSub) {
+      this.customerNumCountSub.unsubscribe();
     }
   }
 

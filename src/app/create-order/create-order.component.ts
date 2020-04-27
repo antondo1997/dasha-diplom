@@ -93,11 +93,16 @@ export class CreateOrderComponent implements OnInit {
       order.hours_rate[item.en] = this.form.value[item.en];
     });
     console.log('Create order:', order);
+
     this.ordersService.create(order).subscribe(() => {
+      this.customerService.setCountOrder(this.idCustomer, 1);
       this.form.reset();
       this.router.navigate(['/dashboard']);
       this.alert.success('New order has been created!');
     });
+  }
+
+  testCount() {
   }
 
   calculate() {

@@ -6,17 +6,26 @@ import {CreateOrderComponent} from './create-order/create-order.component';
 import {EditOrderComponent} from './edit-order/edit-order.component';
 import {CreateCustomerComponent} from './create-customer/create-customer.component';
 import {DashboardCustomerComponent} from './dashboard-page/dashboard-customer/dashboard-customer.component';
+import {Page404Component} from './shared/page404/page404.component';
+import {AuthGuard} from './shared/auth.guard';
 
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'dashboard', component: DashboardPageComponent},
-  {path: 'dashboard/:idCustomer', component: DashboardCustomerComponent},
-  {path: 'create/order', component: CreateOrderComponent},
-  {path: 'create/order/:idCustomer', component: CreateOrderComponent},
-  {path: 'create/customer', component: CreateCustomerComponent},
-  {path: 'edit/:id', component: EditOrderComponent}
+  {path: 'dashboard', component: DashboardPageComponent, canActivate: [AuthGuard]},
+  {path: 'dashboard/:idCustomer', component: DashboardCustomerComponent, canActivate: [AuthGuard]},
+  {path: 'create/order', component: CreateOrderComponent, canActivate: [AuthGuard]},
+  {path: 'create/order/:idCustomer', component: CreateOrderComponent, canActivate: [AuthGuard]},
+  // {path: 'edit/:id', component: EditOrderComponent},
+  {path: 'create/customer', component: CreateCustomerComponent, canActivate: [AuthGuard]},
+  {
+    path: 'edit', children: [
+      {path: 'order/:id', component: EditOrderComponent},
+      {path: 'customer/:id', component: CreateCustomerComponent},
+    ], canActivate: [AuthGuard]
+  },
+  {path: '**', component: Page404Component}
 ];
 
 @NgModule({

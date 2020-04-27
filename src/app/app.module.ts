@@ -19,6 +19,8 @@ import { DashboardCustomerComponent } from './dashboard-page/dashboard-customer/
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {defineLocale, ruLocale} from 'ngx-bootstrap/chronos';
+import { Page404Component } from './shared/page404/page404.component';
+import {TextMaskModule} from 'angular2-text-mask';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -38,7 +40,8 @@ defineLocale('ru', ruLocale);
     AlertComponent,
     LoadingSpinnerComponent,
     CreateCustomerComponent,
-    DashboardCustomerComponent
+    DashboardCustomerComponent,
+    Page404Component
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ defineLocale('ru', ruLocale);
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    TextMaskModule
   ],
   providers: [INTERCEPTOR_PROVIDER, AlertService],
   bootstrap: [AppComponent]

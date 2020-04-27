@@ -56,7 +56,7 @@
         </tbody>
         <tr class="">
           <td>ИТОГО запланировано нормачасов на месяц:</td>
-          <td style="font-size: 1.2rem">{{ sumHours }}</td>
+          <td class="text-center" style="font-size: 1.2rem">{{ sumHours }}</td>
         </tr>
         <tr class="" style="background-color: #d3ffb5">
           <td>Стоимость к оплате:</td>
@@ -86,7 +86,7 @@
     <button
       type="submit"
       class="btn btn-block btn-dark" style="margin: 0 auto; width: 50%"
-      [disabled]="form.invalid || submitted"
+      [disabled]="form.invalid"
     >Обновить заказ
     </button>
 

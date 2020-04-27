@@ -1,8 +1,8 @@
-<!--<app-loading-spinner></app-loading-spinner>-->
-<div *ngIf="!orders.length">
-  <h1>Нет заказов</h1>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+<div *ngIf="!customers.length && !isLoading">
+  <h1>Нет заказчиков</h1>
 </div>
-<div *ngIf="orders.length">
+<div *ngIf="customers.length && !isLoading">
   <div class="form-control">
     <!--    <input type="text" placeholder="Search post by title..." [(ngModel)]="searchStr">-->
   </div>
@@ -11,37 +11,34 @@
     <tr>
       <th style="width: 30px">№</th>
       <th>Заказчик</th>
-      <th>Тип услуги</th>
-      <th>Срок оказания услгуи</th>
+      <th>Количество заказов</th>
+<!--      <th>Срок оказания услгуи</th>-->
       <th class="small">Редактировать</th>
       <th class="small">Удалить</th>
     </tr>
     </thead>
     <tbody>
     <!--    <tr *ngFor="let post of posts | searchPosts:searchStr; let i = index">-->
-    <tr *ngFor="let order of orders ; let i = index">
+    <tr *ngFor="let customer of customers ; let i = index">
       <td>{{ i + 1 }}</td>
-      <td><a [routerLink]="['/dashboard', order.idCustomer]">{{ order.company }}</a></td>
-      <td>{{ order.serviceType }}</td>
+      <td><a [routerLink]="['/dashboard', customer.id]">{{ customer.company }}</a></td>
       <td class="text-center">
-        <div *ngIf="order.date">{{ order.date}}</div>
-        <div *ngIf="!order.date">Нет даты</div>
+        <div *ngIf="customer.count > 0">{{ customer.count}}</div>
+        <div *ngIf="customer.count === 0 || !customer.count">Нет заказов</div>
       </td>
       <!--      <td>{{ post.date | date: 'full':null: 'vi' }}</td>-->
       <td class="text-center">
         <button
           class="btn btn-link open"
-          [routerLink]="['/edit', order.id]"
+          [routerLink]="['/edit/customer', customer.id]"
         ><i class="far fa-edit" style="font-size: 20px"></i>
         </button>
       </td>
       <td class="text-center">
-        <a (click)="removeOrder(order.id)"><i class="far fa-trash-alt" style="font-size: 20px; color: black"></i></a>
+        <a (click)="removeCustomer(customer.id)"><i class="far fa-trash-alt" style="font-size: 20px; color: black"></i></a>
       </td>
     </tr>
     </tbody>
   </table>
 </div>
-
-<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 

@@ -17,7 +17,7 @@ export class EditOrderComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   order: Order;
-  submitted = false;
+  // submitted = false;
   updateSub: Subscription;
   serviceTypes = [
     {ru: 'SEO', en: 'SEO'},
@@ -61,7 +61,7 @@ export class EditOrderComponent implements OnInit, OnDestroy {
         // console.log('Order:', order.date);
         for (const item of this.list) {
           this.form.addControl(item.en, new FormControl(order.hours_rate[item.en], [Validators.required]));
-          this.sumHours += this.form.get(item.en).value;
+          this.sumHours += this.form.get(item.en).value * item.rate;
         }
       });
   }
@@ -70,14 +70,20 @@ export class EditOrderComponent implements OnInit, OnDestroy {
     if (this.form.invalid) {
       return;
     }
-    this.submitted = true;
+    // this.submitted = true;
     const dates: Date[] = this.form.value.date;
+    let date: string;
+    if (this.form.value.date.length === 2) {
+      date = `${dates[0].getDate()}.${dates[0].getMonth() + 1}.${dates[0].getFullYear()} - ${dates[1].getDate()}.${dates[1].getMonth() + 1}.${dates[1].getFullYear()}`
+    } else {
+      date = this.form.value.date;
+    }
     const newOrder: Order = {
       id: this.order.id,
       company: this.form.value.name,
       serviceType: this.form.value.serviceType,
       hours_rate: {},
-      date: `${dates[0].getDate()}.${dates[0].getMonth() + 1}.${dates[0].getFullYear()} - ${dates[1].getDate()}.${dates[1].getMonth() + 1}.${dates[1].getFullYear()}`,
+      date,
       price: +(Math.round(Number((this.sumHours * 36.95) + 'e+2')) + 'e-2'),
       idCustomer: this.order.idCustomer
     };
@@ -86,7 +92,7 @@ export class EditOrderComponent implements OnInit, OnDestroy {
     });
 
     this.updateSub = this.ordersService.update(newOrder).subscribe(() => {
-      this.submitted = false;
+      // this.submitted = false;
       this.alert.success('Заказ обновлен!');
       // this.form.reset();
       this.router.navigate(['/dashboard']);

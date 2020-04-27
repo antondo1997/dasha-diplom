@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Customer} from './interfaces';
-import {Observable} from 'rxjs';
+import {Customer, Order} from './interfaces';
+import {Observable, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
 
@@ -9,6 +9,8 @@ import {map} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CustomerService {
+
+  public numCount$ = new Subject<{id: string, count: number}>();
 
   constructor(
     private http: HttpClient
@@ -43,6 +45,27 @@ export class CustomerService {
           return {...customer, id};
         })
       );
+  }
+
+  setCountOrder(id: string, num: number) {
+    this.http.get<number>(`${environment.databaseURL}/customers/${id}/count.json`)
+      .subscribe((count) => {
+        // console.log('Count:', count);
+        // console.log(typeof count);
+        this.http.patch<{count: number}>(`${environment.databaseURL}/customers/${id}.json`, {count: count + num})
+          .subscribe((res) => {
+            console.log(res);
+            this.numCount$.next({id, count: res.count});
+          });
+      });
+  }
+
+  remove(id: string) {
+    return this.http.delete(`${environment.databaseURL}/customers/${id}.json`);
+  }
+
+  update(customer: Customer): Observable<Customer> {
+    return this.http.patch<Customer>(`${environment.databaseURL}/customers/${customer.id}.json`, customer);
   }
 
 }

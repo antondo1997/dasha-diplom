@@ -19,6 +19,7 @@ export class DashboardCustomerComponent implements OnInit, OnDestroy {
   ordersSub: Subscription;
   removeSub: Subscription;
   searchStr = '';
+  isLoading = true;
 
   constructor(
     private ordersService: OrdersService,
@@ -30,6 +31,7 @@ export class DashboardCustomerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this.route.params
       .pipe(
         switchMap((params) => {
@@ -42,6 +44,7 @@ export class DashboardCustomerComponent implements OnInit, OnDestroy {
           // console.log(posts);
           this.orders = orders.filter((order) => order.idCustomer === customer.id);
           console.log('Orders by customer ID:', this.orders);
+          this.isLoading = false;
         });
       });
 
@@ -50,6 +53,7 @@ export class DashboardCustomerComponent implements OnInit, OnDestroy {
 
   removeOrder(id: string) {
     this.removeSub = this.ordersService.remove(id).subscribe(() => {
+      this.customerService.setCountOrder(this.customer.id, -1);
       this.orders = this.orders.filter(order => order.id !== id);
       this.alert.warning('Post has been deleted!');
     });

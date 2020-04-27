@@ -26,6 +26,7 @@ export interface Customer {
   email: string;
   checkingAccount: string;
   id?: string;
+  count: number;
 }
 
 export type serviceTypes = [
@@ -43,7 +44,7 @@ export const LIST_SERVICE_TYPE = {
     {en: 'designer', ru: 'Часы дизайнер', rate: 1},
     {en: 'programmer', ru: 'Часы программиста', rate: 1.1},
     {en: 'copywriting', ru: 'Услуга копирайтинга - 1 тыс. ЗСП', rate: 0.42},
-    {en: 'rewriting', ru: 'Услуга рерайтинг 1 тыс ЗСП', rate: 0.21},
+    {en: 'rewriting', ru: 'Услуга рерайтинг - 1 тыс ЗСП', rate: 0.21},
     {en: 'num_articles', ru: 'Количество статей для наращивания ссылочной массы', rate: 1},
     // {en: '', ru: ''},
   ],
@@ -54,7 +55,7 @@ export const LIST_SERVICE_TYPE = {
     {en: 'photograph', ru: 'Часы фотографа', rate: 1},
     {en: 'editor', ru: 'Часы редактора текстов', rate: 0.7},
     {en: 'copywriting', ru: 'Услуга копирайтинга - 1 тыс. ЗСП', rate: 0.42},
-    {en: 'rewriting', ru: 'Услуга рерайтинг 1 тыс ЗСП', rate: 0.21}
+    {en: 'rewriting', ru: 'Услуга рерайтинг - 1 тыс ЗСП', rate: 0.21}
   ],
   Контекстуальный: [
     {en: 'specialist', ru: 'Часы специалиста по контексной рекламе', rate: 1},

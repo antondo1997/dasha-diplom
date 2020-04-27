@@ -1,51 +1,58 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <h1>Регистрация заказчика</h1>
+<div *ngIf="form">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Регистрация заказчика</h1>
 
-  <div
-    class="form-control"
-    [ngClass]="{invalid: form.get('company').touched && form.get('company').invalid}"
-  >
-    <label for="company">Название компании:</label>
-    <input type="text" id="company" formControlName="company">
-  </div>
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('company').touched && form.get('company').invalid}"
+    >
+      <label for="company">Название компании:</label>
+      <input type="text" id="company" formControlName="company">
+    </div>
 
-  <div
-    class="form-control"
-    [ngClass]="{invalid: form.get('contactPerson').touched && form.get('contactPerson').invalid}"
-  >
-    <label for="contactPerson">Контактное лицо:</label>
-    <input type="text" id="contactPerson" formControlName="contactPerson">
-  </div>
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('contactPerson').touched && form.get('contactPerson').invalid}"
+    >
+      <label for="contactPerson">Контактное лицо:</label>
+      <input type="text" id="contactPerson" formControlName="contactPerson">
+    </div>
 
-  <div
-    class="form-control"
-    [ngClass]="{invalid: form.get('telephone').touched && form.get('telephone').invalid}"
-  >
-    <label for="telephone">Телефон:</label>
-    <input type="text" id="telephone" formControlName="telephone">
-  </div>
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('telephone').touched && form.get('telephone').invalid}"
+    >
+      <label for="telephone">Телефон:</label>
+      <input type="tel" id="telephone" formControlName="telephone" placeholder="+375 (**) ***-**-**"
+             [textMask]="{mask: phoneMask}"
+      >
+    </div>
 
-  <div
-    class="form-control"
-    [ngClass]="{invalid: form.get('email').touched && form.get('email').invalid}"
-  >
-    <label for="email">Email:</label>
-    <input type="text" id="email" formControlName="email">
-  </div>
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('email').touched && form.get('email').invalid}"
+    >
+      <label for="email">Электрнная почта:</label>
+      <input type="text" id="email" formControlName="email">
+    </div>
 
-  <div
-    class="form-control"
-    [ngClass]="{invalid: form.get('checkingAccount').touched && form.get('checkingAccount').invalid}"
-  >
-    <label for="checkingAccount">Расчетный счет:</label>
-    <input type="text" id="checkingAccount" formControlName="checkingAccount">
-  </div>
+    <div
+      class="form-control"
+      [ngClass]="{invalid: form.get('checkingAccount').touched && form.get('checkingAccount').invalid}"
+    >
+      <label for="checkingAccount">Расчетный счет:</label>
+      <input type="text" id="checkingAccount" formControlName="checkingAccount" placeholder="XXXX XXXX XXXX XXXX XXXX XXXX XXXX"
+             [textMask]="{mask: checkMask}"
+      >
+    </div>
 
-  <button
-    type="submit"
-    class="btn btn-block btn-dark"
-    [disabled]="form.invalid"
-  >Создать заказчика
-  </button>
-
-</form>
+    <button
+      type="submit"
+      class="btn btn-block btn-dark"
+      [disabled]="form.invalid"
+    >
+      <span *ngIf="!updateMode">Создать заказчика</span>
+      <span *ngIf="updateMode">Обновить заказчика</span>
+    </button>
+  </form>
+</div>
