@@ -56,11 +56,11 @@
       </tbody>
       <tr class="">
         <td>ИТОГО запланировано нормачасов на месяц:</td>
-        <td class="text-center" style="font-size: 1.2rem">{{ sumHours }}</td>
+        <td class="text-center" style="font-size: 1.2rem">{{ sumHours | number: '1.2-2' }}</td>
       </tr>
       <tr class="" style="background-color: #d3ffb5">
         <td>Стоимость к оплате:</td>
-        <td class="text-center" style="font-size: 1.2rem">{{ sumHours * 36.95 | number}}</td>
+        <td class="text-center" style="font-size: 1.2rem">{{ sumHours * 36.95 | number: '1.2-2'}}</td>
       </tr>
     </table>
   </div>
