@@ -29,9 +29,9 @@ export class LoginComponent implements OnInit {
     this.route.queryParams
       .subscribe((params) => {
           if (params.loginAgain) {
-            this.message = 'You have no access to Administrator! Please sign in!!';
+            this.message = 'У вас нет доступа к администратору!';
           } else if (params.authFailed) {
-            this.message = 'Session has expired! Please sign in again!!';
+            this.message = 'Сессия истекла!';
           }
         }
       );

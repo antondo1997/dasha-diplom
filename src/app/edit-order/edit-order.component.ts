@@ -74,7 +74,7 @@ export class EditOrderComponent implements OnInit, OnDestroy {
     const dates: Date[] = this.form.value.date;
     let date: string;
     if (this.form.value.date.length === 2) {
-      date = `${dates[0].getDate()}.${dates[0].getMonth() + 1}.${dates[0].getFullYear()} - ${dates[1].getDate()}.${dates[1].getMonth() + 1}.${dates[1].getFullYear()}`
+      date = `${dates[0].getDate()}.${dates[0].getMonth() + 1}.${dates[0].getFullYear()} - ${dates[1].getDate()}.${dates[1].getMonth() + 1}.${dates[1].getFullYear()}`;
     } else {
       date = this.form.value.date;
     }
@@ -95,7 +95,7 @@ export class EditOrderComponent implements OnInit, OnDestroy {
       // this.submitted = false;
       this.alert.success('Заказ обновлен!');
       // this.form.reset();
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard', this.order.idCustomer]);
     });
   }
 

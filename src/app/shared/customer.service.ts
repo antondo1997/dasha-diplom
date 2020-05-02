@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Customer, Order} from './interfaces';
-import {Observable, Subject} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
 
@@ -10,15 +10,32 @@ import {map} from 'rxjs/operators';
 })
 export class CustomerService {
 
-  public numCount$ = new Subject<{id: string, count: number}>();
+  public numCount$ = new Subject<{ id: string, count: number }>();
 
   constructor(
     private http: HttpClient
   ) {
   }
 
-  create(customer: Customer) {
-    return this.http.post(`${environment.databaseURL}/customers.json`, customer);
+  checkAvailable(customer: Customer) {
+    return this.http.get(`${environment.databaseURL}/customers.json?orderBy="company"&equalTo="${customer.company}"`)
+      .pipe(
+        map(
+          (response: { [key: string]: any }) => {
+            // console.log(response);
+            return Object
+              .keys(response)
+              .map(key => ({
+                ...response[key],
+                id: key
+              }));
+          }
+        )
+      );
+  }
+
+  create(customer: Customer): Observable<Customer> {
+    return this.http.post<Customer>(`${environment.databaseURL}/customers.json`, customer);
   }
 
   getAll(): Observable<Customer[]> {
@@ -52,7 +69,7 @@ export class CustomerService {
       .subscribe((count) => {
         // console.log('Count:', count);
         // console.log(typeof count);
-        this.http.patch<{count: number}>(`${environment.databaseURL}/customers/${id}.json`, {count: count + num})
+        this.http.patch<{ count: number }>(`${environment.databaseURL}/customers/${id}.json`, {count: count + num})
           .subscribe((res) => {
             console.log(res);
             this.numCount$.next({id, count: res.count});

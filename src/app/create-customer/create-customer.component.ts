@@ -89,11 +89,19 @@ export class CreateCustomerComponent implements OnInit {
     // console.log(customer);
     // console.log(this.updateMode);
     if (!this.updateMode) {
-      this.customerService.create(customer).subscribe(() => {
-        this.form.reset();
-        this.router.navigate(['/dashboard']);
-        this.alert.success('Новый заказчик создан!');
-      });
+      this.customerService.checkAvailable(customer)
+        .subscribe((res: Customer[]) => {
+          if (res[0]) {
+            console.log(true);
+            this.alert.danger('Заказчик уже существует!');
+          } else {
+            this.customerService.create(customer).subscribe((data) => {
+              this.form.reset();
+              this.router.navigate(['/dashboard']);
+              this.alert.success('Новый заказчик создан!');
+            });
+          }
+        });
     } else {
       customer = {...customer, id: this.idCustomer};
       this.customerService.update(customer).subscribe((cus) => {

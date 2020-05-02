@@ -15,10 +15,16 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'dashboard', component: DashboardPageComponent, canActivate: [AuthGuard]},
   {path: 'dashboard/:idCustomer', component: DashboardCustomerComponent, canActivate: [AuthGuard]},
-  {path: 'create/order', component: CreateOrderComponent, canActivate: [AuthGuard]},
-  {path: 'create/order/:idCustomer', component: CreateOrderComponent, canActivate: [AuthGuard]},
-  // {path: 'edit/:id', component: EditOrderComponent},
-  {path: 'create/customer', component: CreateCustomerComponent, canActivate: [AuthGuard]},
+  // {path: 'create/order', component: CreateOrderComponent, canActivate: [AuthGuard]},
+  // {path: 'create/order/:idCustomer', component: CreateOrderComponent, canActivate: [AuthGuard]},
+  // {path: 'create/customer', component: CreateCustomerComponent, canActivate: [AuthGuard]},
+  {
+    path: 'create', children: [
+      {path: 'customer', component: CreateCustomerComponent},
+      {path: 'order', component: CreateOrderComponent},
+      {path: 'order/id', component: CreateOrderComponent},
+    ], canActivate: [AuthGuard]
+  },
   {
     path: 'edit', children: [
       {path: 'order/:id', component: EditOrderComponent},
