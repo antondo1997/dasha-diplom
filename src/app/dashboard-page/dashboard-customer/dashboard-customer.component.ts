@@ -55,7 +55,7 @@ export class DashboardCustomerComponent implements OnInit, OnDestroy {
     this.removeSub = this.ordersService.remove(id).subscribe(() => {
       this.customerService.setCountOrder(this.customer.id, -1);
       this.orders = this.orders.filter(order => order.id !== id);
-      this.alert.warning('Post has been deleted!');
+      this.alert.success('Post has been deleted!');
     });
   }
 

@@ -3,7 +3,7 @@
     <h1>Корректировать заказ</h1>
 
     <div
-      class="form-control"
+      class="form-control" style="width: 500px; margin: 0 auto;"
       [ngClass]="{invalid: form.get('company').touched && form.get('company').invalid}"
     >
       <label for="company">Компания:</label>
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="form-control">
+    <div class="form-control" style="width: 500px; margin: 0 auto;">
       <label for="date">Срок оказания услуги:</label>
       <input type="text" id="date"
              formControlName="date"
@@ -26,7 +26,7 @@
     </div>
 
     <div
-      class="form-control"
+      class="form-control" style="width: 500px; margin: 0 auto;"
       [ngClass]="{invalid: form.get('serviceType').touched && form.get('serviceType').invalid}"
     >
       <label for="serviceType">Тип услуги:</label>
@@ -37,60 +37,67 @@
       </select>
     </div>
     <div *ngIf="form.value.serviceType !== ''">
-      <table>
+      <table formArrayName="tasks">
         <thead>
         <tr>
           <th>Планирование часов</th>
+          <th>Специалист</th>
           <th>Запланировано часов на месяц</th>
+          <th>Удалить</th>
         </tr>
         </thead>
-        <tbody *ngFor="let item of list">
-        <tr class="form-control-tb" [ngClass]="{invalid: form.get(item.en).touched && form.get(item.en).invalid}">
+        <tbody *ngFor="let item of controls; let i = index">
+        <tr class="form-control-tb" [ngClass]="{invalid: item.touched && item.invalid}">
           <td>
-            <label [for]="item.en">{{item.ru}}</label>
+            <label [for]="i">{{taskList[i].name}}</label>
           </td>
+          <td class="text-center">{{taskList[i].specialist}}</td>
           <td>
-            <input type="number" [id]="item.en" [formControlName]="item.en" min="0" (change)="calculate_sum_hours()">
+            <input type="number" [id]="i" [formControlName]="i" min="0" (change)="calculate_sum_hours()">
+          </td>
+          <td class="text-center">
+            <a (click)="deleteTask(i)"><i class="fas fa-times" style="font-size: 20px; color: black"></i></a>
           </td>
         </tr>
         </tbody>
-        <tr class="">
-          <td>ИТОГО запланировано нормачасов:</td>
+        <tr class="" [formGroup]="formTask">
+          <td>
+            <input type="text" formControlName="name">
+          </td>
+          <td>
+            <select id="" formControlName="specialist">
+              <option value="" disabled>Выбрать специалиста</option>
+              <option *ngFor="let empl of employees" [ngValue]="empl.specialist">{{empl.specialist}}</option>
+            </select>
+          </td>
+          <td>
+            <input type="number" formControlName="setHour" min="0">
+          </td>
+          <td class="text-center">
+            <button class="btn" style="background-color: white"
+                    [disabled]="formTask.invalid"
+                    (click)="addNewTask()">
+              <i class="fas fa-plus" style="font-size: 20px; color: green"></i>
+            </button>
+          </td>
+        </tr>
+        <tr class="" style="font-weight: bold;">
+          <td colspan="2">ИТОГО запланировано нормачасов:</td>
           <td class="text-center" style="font-size: 1.2rem">{{ sumHours | number: '1.2-2' }} BYN</td>
         </tr>
-        <tr class="" style="background-color: #d3ffb5">
-          <td>Стоимость к оплате:</td>
+        <tr class="" style="background-color: #d3ffb5; font-weight: bold;">
+          <td colspan="2">Стоимость к оплате:</td>
           <td class="text-center" style="font-size: 1.2rem">{{ sumHours * 36.95 | number: '1.2-2'}} BYN</td>
         </tr>
       </table>
     </div>
 
-<!--    <div *ngIf="form.value.serviceType !== ''">-->
-<!--      <button type="button" class="btn btn-block" style="margin: 0 auto; width: 50%"-->
-<!--              [disabled]="checkValues()"-->
-<!--              (click)="calculate()"-->
-<!--      >-->
-<!--        Посчитать цену-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div-->
-<!--      class="form-control"-->
-<!--      [ngClass]="{invalid: form.get('price').touched && form.get('price').invalid}"-->
-<!--    >-->
-<!--      <label for="price">Стоимость к оплате:</label>-->
-<!--      <input type="number" id="price" formControlName="price" readonly>-->
-<!--    </div>-->
-
-  <div style="padding: 3px">
-    <button
-      type="submit"
-      class="btn btn-block btn-dark" style="margin: 0 auto; width: 50%"
-      [disabled]="form.invalid"
+    <button style="width: 500px; margin: 3px auto;"
+            type="submit"
+            class="btn btn-block btn-dark" style="margin: 0 auto; width: 50%"
+            [disabled]="form.invalid"
     >Обновить заказ
     </button>
-
-  </div>
 
   </form>
 </div>
