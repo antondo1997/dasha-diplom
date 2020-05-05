@@ -22,7 +22,7 @@ const routes: Routes = [
     path: 'create', children: [
       {path: 'customer', component: CreateCustomerComponent},
       {path: 'order', component: CreateOrderComponent},
-      {path: 'order/id', component: CreateOrderComponent},
+      {path: 'order/:idCustomer', component: CreateOrderComponent},
     ], canActivate: [AuthGuard]
   },
   {
