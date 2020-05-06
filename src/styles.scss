@@ -282,11 +282,12 @@ table th {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.7rem 2rem;
+  //padding: 0.7rem 2rem;
   z-index: 1;
   width: 100%;
   opacity: 0.9;
   margin-bottom: 1rem;
+  font-size: 1.5rem;
 
   &.main {
     justify-content: center;
@@ -295,6 +296,8 @@ table th {
 
   ul {
     display: flex;
+    //justify-content: space-between;
+    padding: 0.7rem 2rem;
   }
 
   li.active a {
